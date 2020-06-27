@@ -1,0 +1,31 @@
+{% extends "milk/skeleton.html" %}
+{% block body %}
+<nav class="navbar container" >
+</nav>
+
+
+<nav class="container navbar navbar-expand-sm">
+    <a class="navbar-brand" href="{% url 'milk:post_index' %}" title="Blog"><i class="fas fa-blog"></i></a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="{% url 'milk:post_index' %}">Posts</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'milk:pages' %}">Pages</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'milk:media_index' %}">Images</a>
+        </li>
+    </ul>
+    </div>
+</nav>
+<main role="main" class="container">
+    {% block content %}{% endblock %}
+</main>
+{% endblock %}

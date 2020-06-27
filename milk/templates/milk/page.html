@@ -1,0 +1,21 @@
+{% extends 'milk/base.html' %}
+
+{% block content %}
+<main class="container">
+    <div class="row pt-5">
+        <div class="col">
+            <h1>{{ page.title }}</h1>
+            <p class="text-muted">
+                {% if request.user.is_authenticated %}
+                &middot; <a href="{% url 'milk:pages_edit' page.id %}">Edit</a>
+                {% endif %}
+            </p>
+            <section class="mt-5">
+                {% autoescape off %}
+                {{ page.body }}
+                {% endautoescape %}
+            </section>
+        </div>
+    </div>
+</main>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends 'milk/base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
+<script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
+<style>
+    input.title:focus, input.title  {
+        background: transparent !important;
+        border: 0;
+        outline: 0;
+        box-shadow:none !important;
+        font-size: 30px;
+        width: 100%;
+        border-bottom: 1px solid #cccccc;
+    }    
+    input.path:focus, input.path  {
+        background: transparent !important;
+        border: 0;
+        outline: 0;
+        box-shadow:none !important;
+        font-size: 20px;
+        width: 100%;
+        border-bottom: 1px solid #cccccc;
+    }    
+
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="container">
+    <div class="row">
+        <div class="col">
+            <form method="POST" action="{% url 'milk:pages_add' %}">
+                {% csrf_token %}
+                {% if page %}
+                    <input type="hidden" name="page_id" value="{{ page.id }}"/>
+                {% endif %}
+                <input type="text" name="title" class="w-100 mb-2 title" placeholder="Title" autofocus required value="{{ page.title }}"/>
+                <input type="text" name="path" class="w-100 mb-5 path" placeholder="/great/content/page.html" required value="{{ page.path }}"/>
+                <div class="mb">
+                    <textarea name="body">{{ page.raw_body }}</textarea>
+                </div>                
+                <button type="submit" class="btn btn-success" style="min-width: 150px;">{% if page %}Save{% else %}Add{% endif %}</button>
+            </form>
+        </div>
+    </div>
+</main>
+<script>
+    var easyMDE = new EasyMDE({
+        placeholder: "Some great content...",
+        showIcons: ["code", "table"],
+        uploadImage: true,
+        imageUploadEndpoint: "{% url 'milk:media_add_json' %}",
+        imageMaxSize: 1024*1024*10,
+        imageCSRFToken: "{{ csrf_token }}",
+    });
+</script>
+
+{% endblock %}

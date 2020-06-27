@@ -1,0 +1,42 @@
+{% extends 'milk/base.html' %}
+{% block content %}
+<main class="container">
+    <div class="row">
+        <div class="col">
+            {% if pages %}
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Title</th>
+                        <th>Path</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for page in pages %}
+                    <tr>
+                        <td>
+                            {{ page.title }}
+                    </td>
+                        <td>{{ page.path }}</td>
+                        <td>
+                            <a href="{% url 'milk:pages_edit' page.id %}" class="mr-1"><i class="fas fa-edit"></i></a>
+                            <a href="{% url 'milk:page' page.id %}" class="mr-1"><i class="fas fa-eye"></i></a>
+                            <a href="{% url 'milk:pages_delete' page.id %}" class="mr-1"><i class="fas fa-trash"></i></a>
+                        </td>
+                    </tr>
+
+                {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+                <p>You do not have any pages, <a href="{% url 'milk:pages_add' %}">add a page</a>.
+        </p>
+            {% endif %}
+        </div>
+    </div>
+</main>
+<nav class="navbar fixed-bottom mb-3">
+    <a class="btn btn-primary ml-auto mr-1" href="{% url 'milk:pages_add' %}"><i class="fas fa-plus"></i> Add Page</a>
+</nav>
+{% endblock %}

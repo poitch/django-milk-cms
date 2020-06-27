@@ -1,0 +1,41 @@
+{% extends 'milk/base.html' %}
+{% block content %}
+<main class="container">
+    <div class="row"> <!-- row -->
+        <div class="col"> <!-- col -->
+            {% if images %}
+            <table class="table table-bordered table-sm table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Uploader</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for image in images %}
+                    <tr>
+                        <td>
+                            <a href="/images/{{ image.image }}"><img src="/images/{{ image.image.thumbnail }}" class="img-fluid img-thumbnail" /></a>
+                        </td>
+                        <td class="text-muted">{{ image.filename }}</td>
+                        <td>{{ image.uploader }}</td>
+                        <td>
+                            <a href="{% url 'milk:media_delete' image.id %}" class="mr-1"><i class="fas fa-trash"></i></a>
+                        </td>
+                    </tr>
+                    {% endfor %}                    
+                </tbody>
+            </table>
+            
+            {% else %}
+            <p>You do not have any uploaded images, <a href="{% url 'milk:media_add' %}">add an image.</a></p>
+            {% endif %}
+        </div> <!-- col -->
+    </div>
+</main>
+<nav class="navbar fixed-bottom mb-3">
+    <a class="btn btn-primary ml-auto mr-1" href="{% url 'milk:media_add' %}"><i class="fas fa-plus"></i> Add Image</a>
+</nav>
+{% endblock %}
