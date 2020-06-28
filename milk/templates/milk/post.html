@@ -7,7 +7,7 @@
             <h1>{{ post.title }}</h1>
             <p class="text-muted">{{ post.author }} &middot; {{ post.created }}
                 {% if request.user.is_authenticated %}
-                &middot; <a href="{% url 'milk:post_edit' post.id %}">Edit</a>
+                &middot; <a href="{% url 'milk:posts_edit' post.id %}">Edit</a>
                 {% endif %}
             </p>
             <section class="mt-5">

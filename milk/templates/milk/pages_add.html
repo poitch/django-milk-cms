@@ -30,11 +30,12 @@
 <main class="container">
     <div class="row">
         <div class="col">
-            <form method="POST" action="{% url 'milk:pages_add' %}">
+            {% if page %}
+                <form method="POST" action="{% url 'milk:pages_edit' page.id %}">
+            {% else %}
+                <form method="POST" action="{% url 'milk:pages_add' %}">
+            {% endif %}
                 {% csrf_token %}
-                {% if page %}
-                    <input type="hidden" name="page_id" value="{{ page.id }}"/>
-                {% endif %}
                 <input type="text" name="title" class="w-100 mb-2 title" placeholder="Title" autofocus required value="{{ page.title }}"/>
                 <input type="text" name="path" class="w-100 mb-5 path" placeholder="/great/content/page.html" required value="{{ page.path }}"/>
                 <div class="mb">

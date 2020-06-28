@@ -22,9 +22,9 @@
                         <td>{{ post.author }}</td>
                         <td>{{ post.created }}</td>
                         <td>
-                            <a href="{% url 'milk:post_edit' post.id %}" class="mr-1"><i class="fas fa-edit"></i></a>
+                            <a href="{% url 'milk:posts_edit' post.id %}" class="mr-1"><i class="fas fa-edit"></i></a>
                             <a href="{% url 'milk:post' post.id %}" class="mr-1"><i class="fas fa-eye"></i></a>
-                            <a href="{% url 'milk:post_delete' post.id %}" class="mr-1"><i class="fas fa-trash"></i></a>
+                            <a href="{% url 'milk:posts_delete' post.id %}" class="mr-1"><i class="fas fa-trash"></i></a>
                         </td>
                     </tr>
 
@@ -32,13 +32,13 @@
                 </tbody>
             </table>
             {% else %}
-                <p>You do not have currently have any posts, <a href="{% url 'milk:post_create' %}">add a post</a>.
+                <p>You do not have currently have any posts, <a href="{% url 'milk:posts_add' %}">add a post</a>.
         </p>
             {% endif %}
         </div>
     </div>
 </main>
 <nav class="navbar fixed-bottom mb-3">
-    <a class="btn btn-primary ml-auto mr-1" href="{% url 'milk:post_create' %}"><i class="fas fa-plus"></i> Add Post</a>
+    <a class="btn btn-primary ml-auto mr-1" href="{% url 'milk:posts_add' %}"><i class="fas fa-plus"></i> Add Post</a>
 </nav>
 {% endblock %}

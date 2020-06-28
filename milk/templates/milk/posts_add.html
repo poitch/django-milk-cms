@@ -20,11 +20,12 @@
 <main class="container">
     <div class="row">
         <div class="col">
-            <form method="POST" action="{% url 'milk:post_create' %}">
+            {% if post %}
+            <form method="POST" action="{% url 'milk:posts_edit' post.id %}">
+            {% else %}
+            <form method="POST" action="{% url 'milk:posts_add' %}">
+            {% endif %}
                 {% csrf_token %}
-                {% if post %}
-                    <input type="hidden" name="post_id" value="{{ post.id }}"/>
-                {% endif %}
                 <input type="text" name="title" class="w-100 mb-5 title" placeholder="Title" autofocus required value="{{ post.title }}"/>
                 <div class="mb">
                     <textarea name="body">{{ post.raw_body }}</textarea>

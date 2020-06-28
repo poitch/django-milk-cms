@@ -18,7 +18,7 @@ def index(request):
     context['posts'] = []
     for post in posts:
         context['posts'].append(Serializer.post(post))
-    return render(request, 'milk/manage.html', context)
+    return render(request, 'milk/posts.html', context)
 
 @login_required
 def post(request, id):
@@ -29,36 +29,35 @@ def post(request, id):
 
 
 @login_required
-def post_edit(request, id):
-    post = get_object_or_404(Post, pk=id)
-    context = {}
-    context['post'] = Serializer.post(post)
-    return render(request, 'milk/create.html', context)
-
-@login_required
-def post_delete(request, id):
+def posts_delete(request, id):
     post = get_object_or_404(Post, pk=id)
     post.delete()
-    return redirect('milk:post_index')
+    return redirect('milk:posts')
 
 @login_required
-def post_create(request):
+def posts_add(request):
     if request.method == 'POST':
         form = PostForm(request.POST)
         if form.is_valid():
-            post_id = request.POST.get('post_id', None)
-            if post_id is None:
-                post = form.save(commit=False)
-                post.author = request.user
-                post.published = True
-                post.save()
-            else:
-                post = get_object_or_404(Post, pk=post_id)
-                post.title = form.cleaned_data['title']
-                post.body = form.cleaned_data['body']
-                post.save()
-            return redirect('milk:post_index')
-    return render(request, 'milk/create.html')
+            post = form.save(commit=False)
+            post.author = request.user
+            post.published = True
+            post.save()
+            return redirect('milk:posts')
+    return render(request, 'milk/posts_add.html')
+
+@login_required
+def posts_edit(request, id):
+    post = get_object_or_404(Post, pk=id)
+    context = {}
+    context['post'] = Serializer.post(post)
+    if request.method == 'POST':
+        post = get_object_or_404(Post, pk=id)
+        form = PostForm(request.POST, instance=post)
+        if form.is_valid():
+            form.save()
+            return redirect('milk:posts')
+    return render(request, 'milk/posts_add.html', context)
 
 @login_required
 def media(request):
@@ -67,7 +66,7 @@ def media(request):
     context['images'] = []
     for image in images:
         context['images'].append(Serializer.image(image))
-    return render(request, 'milk/media.html', context)
+    return render(request, 'milk/images.html', context)
 
 @login_required
 def add_media(request):
@@ -101,7 +100,7 @@ def add_media_handler(request, format='JSON'):
     if format == 'JSON':
         return JsonResponse({'error': 'importError'})
     else:
-        return render(request, 'milk/media.html')
+        return render(request, 'milk/images_add.html')
 
 
 @login_required
@@ -118,16 +117,8 @@ def page_add(request):
     if request.method == 'POST':
         form = PageForm(request.POST)
         if form.is_valid():
-            page_id = request.POST.get('page_id', None)
-            if page_id is None:
-                page = form.save(commit=False)
-                page.author = request.user
-                page.published = True
-            else:
-                page = get_object_or_404(Post, pk=page_id)
-                page.title = form.cleaned_data['title']
-                page.path = form.cleaned_data['path']
-                page.body = form.cleaned_data['body']
+            page = form.save(commit=False)
+            page.published = True
             if page.path[0] != '/':
                 page.path = '/' + page.path
             page.save()
@@ -141,6 +132,16 @@ def pages_edit(request, id):
     page = get_object_or_404(Page, pk=id)
     context = {}
     context['page'] = Serializer.page(page)
+    if request.method == 'POST':
+        form = PageForm(request.POST, instance=page)
+        if form.is_valid():
+            page = form.save(commit=False)
+            if page.path[0] != '/':
+                page.path = '/' + page.path
+            page.save()
+            return redirect('milk:pages')
+        else:
+            print(f"Failed to edit page {form.errors}")
     return render(request, 'milk/pages_add.html', context)
 
 @login_required
